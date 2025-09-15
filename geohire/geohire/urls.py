@@ -26,5 +26,6 @@ urlpatterns = [
     path('jobseeker/', include('jobseeker.urls')),  # This links the jobseeker app
 ]
 
+#this allows to app the server media files during development (it basically makes them static)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

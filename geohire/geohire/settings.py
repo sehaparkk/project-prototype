@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #this version of the import thing allows for additional, custom functions to be defined and used for jobseeker
     'jobseeker.apps.JobseekerConfig',
 ]
 
