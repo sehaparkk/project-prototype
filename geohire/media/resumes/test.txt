@@ -1,0 +1,1 @@
+This file exists solely to ensure that everyone has a media/resumes folder in their gits
