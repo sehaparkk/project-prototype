@@ -1,0 +1,44 @@
+<!-- This is a basic profile page for job seekers that displays all their requisite information.-->
+<!-- The slug is set to DEBUG as I don't think it should be visible to users in the final version.-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Job Seeker Profile</title>
+    </head>
+    <body>
+        <h1>Hi! {{ jobseeker.user.first_name }} this is your profile</h1>
+        <p>Your email is: {{ jobseeker.user.email }}</p>
+        {% if jobseeker.phone %}
+        <p>Your phone number is: {{ jobseeker.phone }}</p>
+        {% endif %}
+        {% if jobseeker.resume %}
+        <p>Your resume is: <a href="{{ jobseeker.resume.url }}">Download</a></p>
+        {% endif %}
+        {% if jobseeker.headline %}
+        <p>Your headline is: {{ jobseeker.headline }}</p>
+        {% endif %}
+        <p>Your account was created at : {{ jobseeker.created_at }}</p>
+        <p>Your account was updated at : {{ jobseeker.updated_at }}</p>
+        {% if debug %}
+        <p>Your unique slug is : {{ jobseeker.slug }}</p>
+        {% endif %}
+        {% if jobseeker.urls %}
+        <p> Your URLs are: {{ jobseeker.urls }}</p>
+        {% endif %}
+        {% if jobseeker.city %}
+        <p>Your city is: {{ jobseeker.city }}</p>
+        {% endif %}
+        {% if jobseeker.state %}
+        <p>Your state is: {{ jobseeker.state }}</p>
+        {% endif %}
+        {% if jobseeker.zip_code %}
+        <p>Your zip code is: {{ jobseeker.zip_code }}</p>
+        {% endif %}
+        {% if jobseeker.street_address %}
+        <p>Your street address is: {{ jobseeker.street_address }}</p>
+        {% endif %}
+        {% if jobseeker.country %}
+        <p>Your country is: {{ jobseeker.country }}</p>
+        {% endif %}
+    </body>
+</html>
