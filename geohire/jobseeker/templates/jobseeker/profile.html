@@ -28,7 +28,7 @@
     {% if jobseeker.location %}
     <p>{{ jobseeker.location.street_address}}, {{ jobseeker.location.city }}, {{ jobseeker.location.state }}, {{ jobseeker.location.zip_code }}</p>
     <p> {{jobseeker.location.country}}</p>
-    <a href="{% url 'delete_location' jobseeker.location.pk %}">Delete Location</a>
+    <a href="{% url 'jobseeker_delete_location' jobseeker.location.pk %}">Delete Location</a>
     {% if jobseeker.location.city %}
     <p>Your city is: {{ jobseeker.location.city }}</p>
     {% endif %}
@@ -37,7 +37,7 @@
     <h3>Work Experience:</h3>
     <p>{{ work.position }} at {{ work.company }} from {{ work.start_date }} to {{ work.end_date }}</p>
     <p>{{ work.description }}</p>
-    <a href="{% url 'delete_work_experience' work.pk %}">Delete Work Experience</a>
+    <a href="{% url 'jobseeker_delete_work_experience' work.pk %}">Delete Work Experience</a>
     {% endfor %}
     {% for edu in jobseeker.educations.all %}
     <h3>Education:</h3>
@@ -45,16 +45,16 @@
     <p>{{ edu.start_date }} - {{ edu.end_date }}</p>
     <p>{{ edu.GPA }}</p>
     <p>{{ edu.description }}</p>
-    <a href="{% url 'delete_education' edu.pk %}">Delete Education</a>
+    <a href="{% url 'jobseeker_delete_education' edu.pk %}">Delete Education</a>
     {% endfor %}
     {% if not jobseeker.location %}
     <p> Want to add a location?</p>
-    <a href="{% url 'new_location' %}">Add Location</a>
+    <a href="{% url 'jobseeker_new_location' %}">Add Location</a>
     <p> Want to add work experience?</p>
     {% endif %}
-    <a href="{% url 'new_work_experience' %}">Add Work Experience</a>
+    <a href="{% url 'jobseeker_new_work_experience' %}">Add Work Experience</a>
     <p> Want to add education?</p>
-    <a href="{% url 'new_education' %}">Add Education</a>
+    <a href="{% url 'jobseeker_new_education' %}">Add Education</a>
 </body>
 
 <html>

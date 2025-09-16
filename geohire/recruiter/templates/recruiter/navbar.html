@@ -1,5 +1,5 @@
 {% if request.resolver_match.url_name == 'recruiter_homepage' %}
-    <form action = "{%url 'logout'%}?next={% url 'homepage' %}" method = "post" style="display:inline;">
+    <form action = "{%url 'recruiter_logout'%}?next={% url 'homepage' %}" method = "post" style="display:inline;">
         {% csrf_token %}
         <button type="submit">Geo Hire</button>
     </form>
@@ -12,7 +12,7 @@
     {% csrf_token %}
     <button type="submit">Profile</button>
 </form>
-<form action = "{%url 'logout'%}" method = "post" style="display:inline;">
+<form action = "{%url 'recruiter_logout'%}" method = "post" style="display:inline;">
     {% csrf_token %}
     <button type="submit">Logout</button>
 </form>
