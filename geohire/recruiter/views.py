@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from .forms import *
-from .models import recruiter
+from .models import Recruiter
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
-    recruiter = get_object_or_404(recruiter, slug=slug)
-    return render(request, 'jobseeker/profile.html', {'slug' : jobseeker.slug, 'jobseeker': jobseeker})
+    recruiter = get_object_or_404(Recruiter, slug=slug)
+    return render(request, 'recruiter/profile.html', {'slug' : recruiter.slug, 'recruiter': recruiter})
 
 #the register view, passes two HTML POST things (one to handle the form, one for the files)
 #and then creates a user and jobseeker object if the form is valid
@@ -23,12 +23,12 @@ def register(request):
 
             counter = 0
             slug = slugify(form.cleaned_data.get('first_name'))
-            while recruiter.objects.filter(slug=slug).exists():
+            while Recruiter.objects.filter(slug=slug).exists():
                 slug = f"{slug}-{counter}" 
                 counter += 1
             #ensures there will always be a numeric character after the slug
             slug = f"{slug}-{counter}-recruiter"
-            recruiter.objects.create(
+            Recruiter.objects.create(
                 user = user,
                 phone = phone,
                 headline = headline,
@@ -46,7 +46,7 @@ def register(request):
 @login_required
 def newLocation(request):
     try:
-        if recruiter.objects.get(user=request.user).location:
+        if Recruiter.objects.get(user=request.user).location:
             return redirect('recruiter_profile', slug=request.user.recruiter.slug)
     except userLocation.DoesNotExist:
         pass
@@ -54,7 +54,7 @@ def newLocation(request):
         form = locationForm(request.POST)
         if form.is_valid():
             location = form.save(commit=False)
-            location.recruiter = recruiter.objects.get(user=request.user)
+            location.recruiter = Recruiter.objects.get(user=request.user)
             location.save()
             return redirect('recruiter_profile', slug=location.recruiter.slug)
     else:
@@ -68,7 +68,7 @@ def newWorkExperience(request):
         form = workExperienceForm(request.POST)
         if form.is_valid():
             work = form.save(commit=False)
-            work.recruiter = recruiter.objects.get(user=request.user)
+            work.recruiter = Recruiter.objects.get(user=request.user)
             work.save()
             return redirect('recruiter_profile', slug=work.recruiter.slug)
     else:
@@ -82,7 +82,7 @@ def newEducation(request):
         form = educationForm(request.POST)
         if form.is_valid():
             education = form.save(commit=False)
-            education.recruiter = recruiter.objects.get(user=request.user)
+            education.recruiter = Recruiter.objects.get(user=request.user)
             education.save()
             return redirect('recruiter_profile', slug=education.recruiter.slug)
     else:

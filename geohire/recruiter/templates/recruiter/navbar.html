@@ -1,10 +1,13 @@
-<form action = "{%url 'logout'%}?next={% url 'homepage' %}" method = "post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Geo Hire</button>
-</form>
+{% if request.resolver_match.url_name == 'recruiter_homepage' %}
+    <form action = "{%url 'logout'%}?next={% url 'homepage' %}" method = "post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Geo Hire</button>
+    </form>
+{%else%}
 <form action="{% url 'recruiter_homepage' %}" method="get" style="display:inline;">
     <button type="submit">Home</button>
 </form>
+{% endif %}
 <form action = "{%url 'recruiter_profile' slug=request.user.recruiter.slug%}" method = "post" style="display:inline;">
     {% csrf_token %}
     <button type="submit">Profile</button>

@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from jobseeker.models import JobSeeker
-from recruiter.models import recruiter
+from recruiter.models import Recruiter
 
 #defines homepage view, passes a jobseeker object if the user is logged in
 #this will need to be updated once we add an employer model
@@ -28,8 +28,8 @@ def login(request):
             auth_login(request, user)
             #checks to see if its a recruiter or jobseeker and redirects accordingly
             try:
-                recruiterTest = recruiter.objects.get(user=user)
+                recruiterTest = Recruiter.objects.get(user=user)
                 return redirect('recruiter_homepage')
-            except recruiter.DoesNotExist:
+            except Recruiter.DoesNotExist:
                 return redirect('jobseeker_homepage')
     return render(request, 'login.html', {'error': error})

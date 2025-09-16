@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 #JobSeeker class to hold data for the jobseeker
-class recruiter(models.Model):
+class Recruiter(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     #unique, non important field to use to search for jobSeekers without exposing the id to the web
     #consists on name + number of other people with that name
@@ -20,7 +20,7 @@ class recruiter(models.Model):
         return self.slug
     
 class userLocation(models.Model):
-    recruiter = models.OneToOneField(recruiter, on_delete=models.CASCADE, related_name='location')
+    recruiter = models.OneToOneField(Recruiter, on_delete=models.CASCADE, related_name='location')
     city = models.CharField(max_length=100,  blank=True, null=True)
     state = models.CharField(max_length=100,  blank=True, null=True)
     zip_code = models.CharField(max_length=20,  blank=True, null=True)
@@ -34,7 +34,7 @@ class userLocation(models.Model):
 #this is linked to a user with a foreign key, meaning it belongs to the user even though
 #it isnt delcared in the user/JobSeeker class (I swear Django is so weird)
 class userEducation(models.Model):
-    recruiter = models.ForeignKey(recruiter, on_delete=models.CASCADE, related_name='educations')
+    recruiter = models.ForeignKey(Recruiter, on_delete=models.CASCADE, related_name='educations')
     institution = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
     field_of_study = models.CharField(max_length=255)
@@ -48,7 +48,7 @@ class userEducation(models.Model):
 
 #creates a work experience class in the same manner as user education
 class workExperience(models.Model):
-    recruiter = models.ForeignKey(recruiter, on_delete=models.CASCADE, related_name='work_experiences')
+    recruiter = models.ForeignKey(Recruiter, on_delete=models.CASCADE, related_name='work_experiences')
     company = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     start_date = models.DateField()
