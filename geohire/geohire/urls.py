@@ -25,7 +25,8 @@ urlpatterns = [
     path('', views.homepage, name='homepage'),
     path('jobseeker/', include('jobseeker.urls')),  # This links the jobseeker app
     path('job/', include('job.urls')), # links job app
-    path('recruiter/', include('recruiter.urls')) # links recruiter app
+    path('recruiter/', include('recruiter.urls')), # links recruiter app
+    path('login/', views.login, name='login'),  # Custom login view
 ]
 
 #this allows to app the server media files during development (it basically makes them static)

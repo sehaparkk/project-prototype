@@ -28,7 +28,7 @@ def register(request):
                 slug = f"{slug}-{counter}" 
                 counter += 1
             #ensures there will always be a numeric character after the slug
-            slug = f"{slug}-{counter}"
+            slug = f"{slug}-{counter}-jobseeker"
             JobSeeker.objects.create(
                 user = user,
                 phone = phone,
@@ -91,9 +91,6 @@ def newEducation(request):
         form = educationForm()
     return render(request, 'jobseeker/newEducation.html', {'form': form})
 
-#basic login view, just renders the login HTML
-def login(request):
-    return render(request, 'jobseeker/login.html')
 
 #deletion views
 @login_required
@@ -113,3 +110,7 @@ def delete_education(request, pk):
     education = get_object_or_404(userEducation, pk=pk, jobseeker__user=request.user)
     education.delete()
     return redirect('jobseeker_profile', slug=education.jobseeker.slug)
+
+#define jobseeker homepage view
+def jobseeker_homepage(request):
+    return render(request, 'jobseeker/jobseekerHomepage.html')

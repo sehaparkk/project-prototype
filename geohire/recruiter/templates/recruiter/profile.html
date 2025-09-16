@@ -5,41 +5,38 @@
         <title>Profile</title>
     </head>
 <body>
-    {% include 'jobseeker/navbar.html' %}
-    <h1>Hi! {{ jobseeker.user.first_name }} this is your profile</h1>
-    <p>Your email is: {{ jobseeker.user.email }}</p>
-    {% if jobseeker.phone %}
-    <p>Your phone number is: {{ jobseeker.phone }}</p>
+    {% include 'recruiter/navbar.html' %}
+    <h1>Hi! {{ recruiter.user.first_name }} this is your profile</h1>
+    <p>Your email is: {{ recruiter.user.email }}</p>
+    {% if recruiter.phone %}
+    <p>Your phone number is: {{ recruiter.phone }}</p>
     {% endif %}
-    {% if jobseeker.resume %}
-    <p>Your resume is: <a href="{{ jobseeker.resume.url }}">Download</a></p>
+    {% if recruiter.headline %}
+    <p>Your headline is: {{ recruiter.headline }}</p>
     {% endif %}
-    {% if jobseeker.headline %}
-    <p>Your headline is: {{ jobseeker.headline }}</p>
-    {% endif %}
-    <p>Your account was created at : {{ jobseeker.created_at }}</p>
-    <p>Your account was updated at : {{ jobseeker.updated_at }}</p>
+    <p>Your account was created at : {{ recruiter.created_at }}</p>
+    <p>Your account was updated at : {{ recruiter.updated_at }}</p>
     {% if debug %}
-    <p>Your unique slug is : {{ jobseeker.slug }}</p>
+    <p>Your unique slug is : {{ recruiter.slug }}</p>
     {% endif %}
-    {% if jobseeker.urls %}
-    <p> Your URLs are: {{ jobseeker.urls }}</p>
+    {% if recruiter.urls %}
+    <p> Your URLs are: {{ recruiter.urls }}</p>
     {% endif %}
-    {% if jobseeker.location %}
-    <p>{{ jobseeker.location.street_address}}, {{ jobseeker.location.city }}, {{ jobseeker.location.state }}, {{ jobseeker.location.zip_code }}</p>
-    <p> {{jobseeker.location.country}}</p>
-    <a href="{% url 'delete_location' jobseeker.location.pk %}">Delete Location</a>
-    {% if jobseeker.location.city %}
-    <p>Your city is: {{ jobseeker.location.city }}</p>
+    {% if recruiter.location %}
+    <p>{{ recruiter.location.street_address}}, {{ recruiter.location.city }}, {{ recruiter.location.state }}, {{ recruiter.location.zip_code }}</p>
+    <p> {{recruiter.location.country}}</p>
+    <a href="{% url 'delete_location' recruiter.location.pk %}">Delete Location</a>
+    {% if recruiter.location.city %}
+    <p>Your city is: {{ recruiter.location.city }}</p>
     {% endif %}
     {% endif %}
-    {% for work in jobseeker.work_experiences.all %}
+    {% for work in recruiter.work_experiences.all %}
     <h3>Work Experience:</h3>
     <p>{{ work.position }} at {{ work.company }} from {{ work.start_date }} to {{ work.end_date }}</p>
     <p>{{ work.description }}</p>
     <a href="{% url 'delete_work_experience' work.pk %}">Delete Work Experience</a>
     {% endfor %}
-    {% for edu in jobseeker.educations.all %}
+    {% for edu in recruiter.educations.all %}
     <h3>Education:</h3>
     <p>{{ edu.institution }}, {{ edu.degree }}, {{ edu.field_of_study }}</p>
     <p>{{ edu.start_date }} - {{ edu.end_date }}</p>
@@ -47,7 +44,7 @@
     <p>{{ edu.description }}</p>
     <a href="{% url 'delete_education' edu.pk %}">Delete Education</a>
     {% endfor %}
-    {% if not jobseeker.location %}
+    {% if not recruiter.location %}
     <p> Want to add a location?</p>
     <a href="{% url 'new_location' %}">Add Location</a>
     <p> Want to add work experience?</p>

@@ -1,0 +1,15 @@
+<form action = "{%url 'logout'%}?next={% url 'homepage' %}" method = "post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Geo Hire</button>
+</form>
+<form action="{% url 'jobseeker_homepage' %}" method="get" style="display:inline;">
+    <button type="submit">Home</button>
+</form>
+<form action = "{%url 'jobseeker_profile' slug=request.user.jobseeker.slug%}" method = "post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Profile</button>
+</form>
+<form action = "{%url 'logout'%}" method = "post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>

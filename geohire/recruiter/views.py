@@ -1,7 +1,114 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from .forms import *
+from .models import recruiter
+from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-def index(request):
-    template_data = {}
-    template_data['title'] = "Recruiter Page"
-    return render(request, 'recruiter/index.html', {"template_data": template_data})
+# basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
+def show_profile(request, slug):
+    recruiter = get_object_or_404(recruiter, slug=slug)
+    return render(request, 'jobseeker/profile.html', {'slug' : jobseeker.slug, 'jobseeker': jobseeker})
+
+#the register view, passes two HTML POST things (one to handle the form, one for the files)
+#and then creates a user and jobseeker object if the form is valid
+def register(request):
+    if request.method == 'POST':
+        form = recruiterCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            phone = form.cleaned_data.get('phone')
+            headline = form.cleaned_data.get('headline')
+            urls = form.cleaned_data.get('urls')
+
+            counter = 0
+            slug = slugify(form.cleaned_data.get('first_name'))
+            while recruiter.objects.filter(slug=slug).exists():
+                slug = f"{slug}-{counter}" 
+                counter += 1
+            #ensures there will always be a numeric character after the slug
+            slug = f"{slug}-{counter}-recruiter"
+            recruiter.objects.create(
+                user = user,
+                phone = phone,
+                headline = headline,
+                created_at = user.date_joined,
+                updated_at = user.date_joined,
+                slug = slug,
+                urls = urls,
+            )
+            return redirect('login')
+    else:
+        form = recruiterCreationForm()
+    return render(request, 'recruiter/register.html', {'form': form})
+
+#create view for creating a new location
+@login_required
+def newLocation(request):
+    try:
+        if recruiter.objects.get(user=request.user).location:
+            return redirect('recruiter_profile', slug=request.user.recruiter.slug)
+    except userLocation.DoesNotExist:
+        pass
+    if request.method == 'POST':
+        form = locationForm(request.POST)
+        if form.is_valid():
+            location = form.save(commit=False)
+            location.recruiter = recruiter.objects.get(user=request.user)
+            location.save()
+            return redirect('recruiter_profile', slug=location.recruiter.slug)
+    else:
+        form = locationForm()
+    return render(request, 'recruiter/newLocation.html', {'form': form})
+
+#create view for creating new work experience
+@login_required
+def newWorkExperience(request):
+    if request.method == 'POST':
+        form = workExperienceForm(request.POST)
+        if form.is_valid():
+            work = form.save(commit=False)
+            work.recruiter = recruiter.objects.get(user=request.user)
+            work.save()
+            return redirect('recruiter_profile', slug=work.recruiter.slug)
+    else:
+        form = workExperienceForm()
+    return render(request, 'recruiter/newWorkExperience.html', {'form': form})
+
+#create view for creating new education
+@login_required
+def newEducation(request):
+    if request.method == 'POST':
+        form = educationForm(request.POST)
+        if form.is_valid():
+            education = form.save(commit=False)
+            education.recruiter = recruiter.objects.get(user=request.user)
+            education.save()
+            return redirect('recruiter_profile', slug=education.recruiter.slug)
+    else:
+        form = educationForm()
+    return render(request, 'recruiter/newEducation.html', {'form': form})
+
+
+#deletion views
+@login_required
+def delete_location(request, pk):
+    location = get_object_or_404(userLocation, pk=pk, recruiter__user=request.user)
+    location.delete()
+    return redirect('recruiter_profile', slug=location.recruiter.slug)
+
+@login_required
+def delete_work_experience(request, pk):
+    work = get_object_or_404(workExperience, pk=pk, recruiter__user=request.user)
+    work.delete()
+    return redirect('recruiter_profile', slug=work.recruiter.slug)
+
+@login_required
+def delete_education(request, pk):
+    education = get_object_or_404(userEducation, pk=pk, recruiter__user=request.user)
+    education.delete()
+    return redirect('recruiter_profile', slug=education.recruiter.slug)
+
+#define recruiter homepage view
+def recruiter_homepage(request):
+    return render(request, 'recruiter/recruiterHomepage.html')

@@ -2,16 +2,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Create New Education</title>
+        <title>Register</title>
     </head>
     <body>
-        {% include 'jobseeker/navbar.html' %}
         <p> {{form.errors}}</p>
-        <h2>Create New Education</h2>
+        <h2>Register</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Add Education!</button>
+            <button type="submit">Register</button>
         </form>
     </body>
 </html>

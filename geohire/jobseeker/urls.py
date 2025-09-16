@@ -8,13 +8,13 @@ from . import views
 #Note: The logout just redirects back to the homepage instead of to a seperate page (thats what the next_page thing does)
 urlpatterns = [
     path('profile/<str:slug>/', views.show_profile, name='jobseeker_profile'),
-    path('register/', views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='jobseeker/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout'),
+    path('register/', views.register, name='jobseeker_register'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='jobseeker_homepage'), name='logout'),
     path('newLocation/', views.newLocation, name='new_location'),
     path('newWorkExperience/', views.newWorkExperience, name='new_work_experience'),
     path('newEducation/', views.newEducation, name='new_education'),
     path('delete_location/<int:pk>/', views.delete_location, name='delete_location'),
     path('delete_work_experience/<int:pk>/', views.delete_work_experience, name='delete_work_experience'),
     path('delete_education/<int:pk>/', views.delete_education, name='delete_education'),
+    path('jobSeekerHomepage/', views.jobseeker_homepage, name='jobseeker_homepage'),
 ]

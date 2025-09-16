@@ -1,6 +1,13 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-    <h1> Welcome to Geohire!</h1>
-    <h3> The best location to find a job based on location! </h3>
-{% endblock content %}
+{%load static %}
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <head>
+        <title>Landing Page</title>
+    </head>
+    <body>
+        <a href="{% url 'login' %}">login</a>
+        <a href ="{% url 'jobseeker_register' %}">Register as Jobseeker</a>
+        <a href ="{% url 'recruiter_register' %}">Register as Recruiter</a>
+    </body>
+</html>
