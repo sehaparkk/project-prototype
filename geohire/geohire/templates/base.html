@@ -7,9 +7,10 @@
         <title>{{ template_data.title }}</title>
     </head>
     <body>
+    <a href="{% url 'homepage' %}">Home</a>
     {%if user.is_authenticated %}
-    {% if jobseeker %}
-    <a href = "{%url 'jobseeker_profile' slug=jobseeker.slug%}">Profile</a>
+    {% if template_data.jobseeker %}
+    <a href = "{%url 'jobseeker_profile' slug=template_data.jobseeker.slug%}">Profile</a>
     {%endif%}
     <form action = "{%url 'logout'%}" method = "post" style="display:inline;">
         {% csrf_token %}
