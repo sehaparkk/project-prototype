@@ -1,0 +1,29 @@
+{%load static %}
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <body>
+    {%if user.is_authenticated %}
+    {% if jobseeker %}
+    <a href = "{%url 'jobseeker_profile' slug=jobseeker.slug%}">Profile</a>
+    {%endif%}
+    <form action = "{%url 'logout'%}" method = "post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+    {%else%}
+    <form action ="{% url 'login'%}" method = "post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Login</button>
+    </form>
+    <form action ="{% url 'register'%}" method = "post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Register</button>
+    </form>
+    {%endif%}
+    <div class = "test">
+        <h1>Welcome to GeoHire!</h1>
+        <p>This is the base template.</p>
+    </div>s
+    </body>
+</html>
