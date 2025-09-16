@@ -2,10 +2,15 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <head>
+        <title>{{ template_data.title }}</title>
+    </head>
     <body>
+    <a href="{% url 'homepage' %}">Home</a>
     {%if user.is_authenticated %}
-    {% if jobseeker %}
-    <a href = "{%url 'jobseeker_profile' slug=jobseeker.slug%}">Profile</a>
+    {% if template_data.jobseeker %}
+    <a href = "{%url 'jobseeker_profile' slug=template_data.jobseeker.slug%}">Profile</a>
     {%endif%}
     <form action = "{%url 'logout'%}" method = "post" style="display:inline;">
         {% csrf_token %}
@@ -21,9 +26,8 @@
         <button type="submit">Register</button>
     </form>
     {%endif%}
-    <div class = "test">
-        <h1>Welcome to GeoHire!</h1>
-        <p>This is the base template.</p>
-    </div>s
+    {% block content %}
+
+    {% endblock content %}
     </body>
 </html>

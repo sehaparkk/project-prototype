@@ -5,11 +5,14 @@ from jobseeker.models import JobSeeker
 #this will need to be updated once we add an employer model
 def homepage(request):
     jobseeker = None
+    template_data = {}
+    template_data['title'] = "Home"
+
     try:
         if request.user.is_authenticated:
-            jobseeker= JobSeeker.objects.get(user=request.user)
+            template_data['jobseeker']=JobSeeker.objects.get(user=request.user)
     except:
         jobseeker = None
-    return render(request, 'base.html', {'jobseeker': jobseeker})
+    return render(request, 'home.html', {'template_data': template_data})
 
 # Create your views here.
