@@ -1,0 +1,16 @@
+<!-- This is an epic registration page that uses our custom job seeker registration form.-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create New Location</title>
+    </head>
+    <body>
+        <p> {{form.errors}}</p>
+        <h2>Register</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Location</button>
+        </form>
+    </body>
+</html>

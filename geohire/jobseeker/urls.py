@@ -11,4 +11,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='jobseeker/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout'),
+    path('newLocation/', views.newLocation, name='new_location'),
+    path('newWorkExperience/', views.newWorkExperience, name='new_work_experience'),
+    path('newEducation/', views.newEducation, name='new_education'),
 ]

@@ -17,15 +17,19 @@ class JobSeeker(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     headline = models.CharField(max_length=255, blank=True, null=True)
     urls = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return self.slug
+    
+class userLocation(models.Model):
+    jobseeker = models.OneToOneField(JobSeeker, on_delete=models.CASCADE, related_name='location')
     city = models.CharField(max_length=100,  blank=True, null=True)
     state = models.CharField(max_length=100,  blank=True, null=True)
     zip_code = models.CharField(max_length=20,  blank=True, null=True)
     street_address = models.CharField(max_length=255,  blank=True, null=True)
     country = models.CharField(max_length=100,  blank=True, null=True)
-    def __str__(self):
-        return self.slug
-    
 
+    def __str__(self):
+        return f"{self.jobseeker.slug} - {self.country} at {self.zip_code}" 
 
 #creates a class for user eduction that holds information about the users education
 #this is linked to a user with a foreign key, meaning it belongs to the user even though

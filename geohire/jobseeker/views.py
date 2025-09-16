@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
-from .forms import jobseekerCreationForm
+from .forms import *
 from .models import JobSeeker
 from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
@@ -20,11 +21,6 @@ def register(request):
             resume = form.cleaned_data.get('resume')
             headline = form.cleaned_data.get('headline')
             urls = form.cleaned_data.get('urls')
-            city = form.cleaned_data.get('city')
-            state = form.cleaned_data.get('state')
-            zip_code = form.cleaned_data.get('zip_code')
-            street_address = form.cleaned_data.get('street_address')
-            country = form.cleaned_data.get('country')
 
             counter = 0
             slug = slugify(form.cleaned_data.get('first_name'))
@@ -42,16 +38,53 @@ def register(request):
                 updated_at = user.date_joined,
                 slug = slug,
                 urls = urls,
-                city = city,
-                state = state,
-                zip_code = zip_code,
-                street_address = street_address,
-                country = country,
             )
             return redirect('login')
     else:
         form = jobseekerCreationForm()
     return render(request, 'jobseeker/register.html', {'form': form})
+
+#create view for creating a new location
+@login_required
+def newLocation(request):
+    if request.method == 'POST':
+        form = locationForm(request.POST)
+        if form.is_valid():
+            location = form.save(commit=False)
+            location.jobseeker = JobSeeker.objects.get(user=request.user)
+            location.save()
+            return redirect('jobseeker_profile', slug=location.jobseeker.slug)
+    else:
+        form = locationForm()
+    return render(request, 'jobseeker/newLocation.html', {'form': form})
+
+#create view for creating new work experience
+@login_required
+def newWorkExperience(request):
+    if request.method == 'POST':
+        form = workExperienceForm(request.POST)
+        if form.is_valid():
+            work = form.save(commit=False)
+            work.jobseeker = JobSeeker.objects.get(user=request.user)
+            work.save()
+            return redirect('jobseeker_profile', slug=work.jobseeker.slug)
+    else:
+        form = workExperienceForm()
+    return render(request, 'jobseeker/newWorkExperience.html', {'form': form})
+
+#create view for creating new education
+@login_required
+def newEducation(request):
+    if request.method == 'POST':
+        form = educationForm(request.POST)
+        if form.is_valid():
+            education = form.save(commit=False)
+            education.jobseeker = JobSeeker.objects.get(user=request.user)
+            education.save()
+            return redirect('jobseeker_profile', slug=education.jobseeker.slug)
+    else:
+        form = educationForm()
+    return render(request, 'jobseeker/newEducation.html', {'form': form})
 
 #basic login view, just renders the login HTML
 def login(request):
