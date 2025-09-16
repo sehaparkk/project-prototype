@@ -2,6 +2,10 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <head>
+        <title>{{ template_data.title }}</title>
+    </head>
     <body>
     {%if user.is_authenticated %}
     {% if jobseeker %}
@@ -21,9 +25,8 @@
         <button type="submit">Register</button>
     </form>
     {%endif%}
-    <div class = "test">
-        <h1>Welcome to GeoHire!</h1>
-        <p>This is the base template.</p>
-    </div>s
+    {% block content %}
+
+    {% endblock content %}
     </body>
 </html>
