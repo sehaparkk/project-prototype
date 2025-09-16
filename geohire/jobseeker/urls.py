@@ -14,4 +14,7 @@ urlpatterns = [
     path('newLocation/', views.newLocation, name='new_location'),
     path('newWorkExperience/', views.newWorkExperience, name='new_work_experience'),
     path('newEducation/', views.newEducation, name='new_education'),
+    path('delete_location/<int:pk>/', views.delete_location, name='delete_location'),
+    path('delete_work_experience/<int:pk>/', views.delete_work_experience, name='delete_work_experience'),
+    path('delete_education/<int:pk>/', views.delete_education, name='delete_education'),
 ]

@@ -47,6 +47,11 @@ def register(request):
 #create view for creating a new location
 @login_required
 def newLocation(request):
+    try:
+        if JobSeeker.objects.get(user=request.user).location:
+            return redirect('jobseeker_profile', slug=request.user.jobseeker.slug)
+    except userLocation.DoesNotExist:
+        pass
     if request.method == 'POST':
         form = locationForm(request.POST)
         if form.is_valid():
@@ -89,3 +94,22 @@ def newEducation(request):
 #basic login view, just renders the login HTML
 def login(request):
     return render(request, 'jobseeker/login.html')
+
+#deletion views
+@login_required
+def delete_location(request, pk):
+    location = get_object_or_404(userLocation, pk=pk, jobseeker__user=request.user)
+    location.delete()
+    return redirect('jobseeker_profile', slug=location.jobseeker.slug)
+
+@login_required
+def delete_work_experience(request, pk):
+    work = get_object_or_404(workExperience, pk=pk, jobseeker__user=request.user)
+    work.delete()
+    return redirect('jobseeker_profile', slug=work.jobseeker.slug)
+
+@login_required
+def delete_education(request, pk):
+    education = get_object_or_404(userEducation, pk=pk, jobseeker__user=request.user)
+    education.delete()
+    return redirect('jobseeker_profile', slug=education.jobseeker.slug)
