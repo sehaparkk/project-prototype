@@ -1,14 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Job
+from .forms import JobForm
 
-# Create your views here.
+
 def index(request):
     template_data = {}
     template_data['title'] = "Job"
     return render(request, "job/index.html", {"template_data": template_data})
-    
+
+
 def job_list(request):
     jobs = Job.objects.all().order_by('-posted_at')
     return render(request, 'job/job_list.html', {'jobs': jobs})
+
 
 def create_job(request):
     if request.method == 'POST':
@@ -19,6 +23,7 @@ def create_job(request):
     else:
         form = JobForm()
     return render(request, 'job/create_job.html', {'form': form})
+
 
 def edit_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
