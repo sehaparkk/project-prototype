@@ -2,3 +2,4 @@
 *.docx
 *.vscode
 /geohire/media/resumes/*.pdf
+/geohire/*.sql
