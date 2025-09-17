@@ -3,8 +3,29 @@
 <ul>
   {% for job in jobs %}
     <li>
-      <strong>{{ job.title }}</strong> - {{ job.location }}
-      <a href="{% url 'edit_job' job.id %}">Edit</a>
+      <strong>{{ job.title }}</strong><br>
+      {{ job.description|truncatewords:20 }}<br>
+
+      {% if not job.hide_salary %}
+        Salary: {{ job.salary_min }} - {{ job.salary_max }}<br>
+      {% else %}
+        Salary: Hidden<br>
+      {% endif %}
+
+      Skills:
+      {% for skill in job.skills.all %}
+        {{ skill.name }}{% if not forloop.last %}, {% endif %}
+      {% empty %}
+        None listed
+      {% endfor %}<br>
+
+      {% if job.location %}
+        Location: {{ job.location.city }}, {{ job.location.country }}
+      {% else %}
+        Location: Not specified
+      {% endif %}
+
+      <br><a href="{% url 'edit_job' job.id %}">Edit</a>
     </li>
   {% endfor %}
 </ul>
