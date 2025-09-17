@@ -4,4 +4,13 @@ from .models import Job
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description', 'location', 'skills', 'salary_range', 'remote_or_onsite', 'visa_sponsorship']
+        fields = [
+            'title',
+            'description',
+            'salary_min',
+            'salary_max',
+            'hide_salary',
+            'remote_or_onsite',
+            'visa_sponsorship',
+            'skills'
+        ]
