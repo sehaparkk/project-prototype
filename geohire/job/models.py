@@ -11,6 +11,7 @@ class Job(models.Model):
     remote_or_onsite = models.CharField(
         max_length=20,
         choices=[("Remote", "Remote"), ("Onsite", "Onsite")]
+        default="Remote"
     )
     visa_sponsorship = models.BooleanField(default=False)
     def __str__(self):
