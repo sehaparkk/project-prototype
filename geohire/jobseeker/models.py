@@ -16,7 +16,8 @@ class JobSeeker(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     headline = models.CharField(max_length=255, blank=True, null=True)
-    urls = models.TextField(blank=True, null=True)
+    urls = []
+    skills = []
     def __str__(self):
         return self.slug
     

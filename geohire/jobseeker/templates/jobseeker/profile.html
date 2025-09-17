@@ -23,7 +23,16 @@
     <p>Your unique slug is : {{ jobseeker.slug }}</p>
     {% endif %}
     {% if jobseeker.urls %}
-    <p> Your URLs are: {{ jobseeker.urls }}</p>
+    {% for urlText in jobseeker.urls %}
+    <p> URL: {{ urlText }}</p>
+    <a href ="{% url 'jobseeker_delete_url' urlText %}">delete</a>
+    {% endfor %}
+    {% endif %}
+    {% if jobseeker.skills %}
+    {% for skillText in jobseeker.skills %}
+    <p> Skill: {{ skillText }}</p>
+    <a href ="{% url 'jobseeker_delete_skill' skillText %}">delete</a>
+    {% endfor %}
     {% endif %}
     {% if jobseeker.location %}
     <p>{{ jobseeker.location.street_address}}, {{ jobseeker.location.city }}, {{ jobseeker.location.state }}, {{ jobseeker.location.zip_code }}</p>
@@ -48,13 +57,17 @@
     <a href="{% url 'jobseeker_delete_education' edu.pk %}">Delete Education</a>
     {% endfor %}
     {% if not jobseeker.location %}
-    <p> Want to add a location?</p>
+    <p>Want to add a location?</p>
     <a href="{% url 'jobseeker_new_location' %}">Add Location</a>
     <p> Want to add work experience?</p>
     {% endif %}
     <a href="{% url 'jobseeker_new_work_experience' %}">Add Work Experience</a>
-    <p> Want to add education?</p>
+    <p>Want to add education?</p>
     <a href="{% url 'jobseeker_new_education' %}">Add Education</a>
+    <p>Want to add a url?</p>
+    <a href="{% url 'jobseeker_url_adder_form' %}">Add URL</a>
+    <p>Want to add a skill?</p>
+    <a href="{% url 'jobseeker_skill_adder_form' %}">Add Skill</a>
 </body>
 
 <html>

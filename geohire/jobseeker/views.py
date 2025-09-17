@@ -4,6 +4,7 @@ from .forms import *
 from .models import JobSeeker
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
+import json
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
@@ -20,7 +21,6 @@ def register(request):
             phone = form.cleaned_data.get('phone')
             resume = form.cleaned_data.get('resume')
             headline = form.cleaned_data.get('headline')
-            urls = form.cleaned_data.get('urls')
 
             counter = 0
             slug = slugify(form.cleaned_data.get('first_name'))
@@ -37,7 +37,6 @@ def register(request):
                 created_at = user.date_joined,
                 updated_at = user.date_joined,
                 slug = slug,
-                urls = urls,
             )
             return redirect('login')
     else:
@@ -91,8 +90,43 @@ def newEducation(request):
         form = educationForm()
     return render(request, 'jobseeker/newEducation.html', {'form': form})
 
+@login_required
+def newURL(request):
+    if request.method  == 'POST':
+        form = urlAdderForm(request.POST)
+        if form.is_valid():
+            jobseeker = JobSeeker.objects.get(user=request.user)
+            jobseeker.urls.append(form.cleaned_data.get('url'))
+            return redirect('jobseeker_profile', slug=jobseeker.slug)
+    else:
+        form = urlAdderForm()
+    return render(request, 'jobseeker/newURL.html', {'form': form})
+
+@login_required
+def newSkill(request):
+    if request.method  == 'POST':
+        form = skillAdderForm(request.POST)
+        if form.is_valid():
+            jobseeker = JobSeeker.objects.get(user=request.user)
+            jobseeker.skills.append(form.cleaned_data.get('skill'))
+            return redirect('jobseeker_profile', slug=jobseeker.slug)
+    else:
+        form = skillAdderForm()
+    return render(request, 'jobseeker/newSkill.html', {'form': form})
 
 #deletion views
+@login_required
+def deleteSkill(request, skillText):
+    jobseeker = JobSeeker.objects.get(user=request.user)
+    jobseeker.skills.remove(skillText)
+    return redirect('jobseeker_profile', slug=jobseeker.slug)
+
+@login_required
+def deleteURL(request, urlText):
+    jobseeker = JobSeeker.objects.get(user=request.user)
+    jobseeker.urls.remove(urlText)
+    return redirect('jobseeker_profile', slug=jobseeker.slug)
+
 @login_required
 def delete_location(request, pk):
     location = get_object_or_404(userLocation, pk=pk, jobseeker__user=request.user)

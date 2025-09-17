@@ -1,0 +1,17 @@
+<!-- This is an epic registration page that uses our custom job seeker registration form.-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create New Skill!</title>
+    </head>
+    <body>
+        {% include 'jobseeker/navbar.html' %}
+        <p> {{form.errors}}</p>
+        <h2>Create New Skill!</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Skill</button>
+        </form>
+    </body>
+</html>

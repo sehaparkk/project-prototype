@@ -17,4 +17,8 @@ urlpatterns = [
     path('delete_work_experience/<int:pk>/', views.delete_work_experience, name='jobseeker_delete_work_experience'),
     path('delete_education/<int:pk>/', views.delete_education, name='jobseeker_delete_education'),
     path('jobSeekerHomepage/', views.jobseeker_homepage, name='jobseeker_homepage'),
+    path('newURL/', views.newURL, name = 'jobseeker_url_adder_form'),
+    path('deleteURL/<str:urlText>/', views.deleteURL, name='jobseeker_delete_url'),
+    path('newSkills/', views.newSkill, name = 'jobseeker_skill_adder_form'),
+    path('deleteSkill/<str:skillText>/', views.deleteSkill, name='jobseeker_delete_skill')
 ]

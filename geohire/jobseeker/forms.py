@@ -12,7 +12,6 @@ class jobseekerCreationForm(UserCreationForm):
     phone = forms.CharField(max_length=15, required = False)
     resume = forms.FileField(required = False)
     headline = forms.CharField(widget=forms.Textarea, required = False)
-    urls = forms.CharField(widget = forms.Textarea, required= False)
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
@@ -32,3 +31,9 @@ class workExperienceForm(forms.ModelForm):
     class Meta:
         model = workExperience
         fields = ('company', 'position', 'start_date', 'end_date', 'description')
+
+class urlAdderForm(forms.Form):
+    url = forms.CharField(max_length = 200)
+
+class skillAdderForm(forms.Form):
+    skill = forms.CharField(max_length = 500)
