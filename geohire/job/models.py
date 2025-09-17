@@ -6,7 +6,7 @@ class Job(models.Model):
     description = models.TextField()
     location = models.CharField(max_length=100)
     posted_at = models.DateTimeField(auto_now_add=True)
-    skills = models.TextField(help_text="Required skills")  
+    skills = models.TextField(default="Not specified") 
     salary_range = models.CharField(max_length=50, default="Not specified")
     remote_or_onsite = models.CharField(
         max_length=20,
