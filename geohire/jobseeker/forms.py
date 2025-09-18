@@ -36,4 +36,4 @@ class urlAdderForm(forms.Form):
     url = forms.CharField(max_length = 200)
 
 class skillAdderForm(forms.Form):
-    skill = forms.CharField(max_length = 500)
+    skill = forms.CharField(max_length = 200, widget=forms.TextInput(attrs={'id':'skill-input'}))

@@ -1,6 +1,30 @@
 <!-- This is an epic registration page that uses our custom job seeker registration form.-->
 <!DOCTYPE html>
 <html>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('skill-input');
+        const suggestions = document.getElementById('skill-suggestions');
+
+        input.addEventListener('input', function() {
+            const query = input.value;
+            if (query.length === 0) {
+                suggestions.innerHTML = '';
+                return;
+            }
+            fetch(`/jobseeker/skill-autocomplete/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestions.innerHTML = '';
+                    data.results.forEach(skill => {
+                    const li = document.createElement('li');
+                    li.textContent = skill;
+                    suggestions.appendChild(li);
+                    });
+                });
+        });
+    });
+    </script>
     <head>
         <title>Create New Skill!</title>
     </head>
@@ -11,6 +35,7 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            <ul id="skill-suggestions"></ul>
             <button type="submit">Add Skill</button>
         </form>
     </body>

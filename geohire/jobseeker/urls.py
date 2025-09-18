@@ -20,5 +20,6 @@ urlpatterns = [
     path('newURL/', views.newURL, name = 'jobseeker_url_adder_form'),
     path('deleteURL/<str:urlText>/', views.deleteURL, name='jobseeker_delete_url'),
     path('newSkills/', views.newSkill, name = 'jobseeker_skill_adder_form'),
-    path('deleteSkill/<str:skillText>/', views.deleteSkill, name='jobseeker_delete_skill')
+    path('deleteSkill/<int:pk>/', views.deleteSkill, name='jobseeker_delete_skill'),
+    path('skill-autocomplete/', views.skill_autocomplete, name='skill_autocomplete')
 ]

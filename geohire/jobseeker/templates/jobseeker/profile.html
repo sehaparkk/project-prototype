@@ -42,11 +42,10 @@
     {% if debug %}
     <p>Your unique slug is : {{ jobseeker.slug }}</p>
     {% endif %}
-    
     {% if jobseeker.skills %}
-    {% for skillText in jobseeker.skills %}
-    <p> Skill: {{ skillText }}</p>
-    <a href ="{% url 'jobseeker_delete_skill' skillText %}">delete</a>
+    {% for skill in jobseeker.skills.all %}
+    <p> Skill: {{ skill.name }}</p>
+    <a href ="{% url 'jobseeker_delete_skill' skill.pk %}">delete</a>
     {% endfor %}
     {% endif %}
     {% if jobseeker.location %}

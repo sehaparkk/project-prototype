@@ -4,7 +4,8 @@ from .forms import *
 from .models import JobSeeker
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
-import json
+from django.http import JsonResponse
+from django.db.models import Count
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
@@ -108,7 +109,9 @@ def newSkill(request):
         form = skillAdderForm(request.POST)
         if form.is_valid():
             jobseeker = JobSeeker.objects.get(user=request.user)
-            jobseeker.skills.append(form.cleaned_data.get('skill'))
+            skillName = form.cleaned_data.get('skill')
+            skill_obj, created = Skill.objects.get_or_create(name=skillName)
+            jobseeker.skills.add(skill_obj)
             return redirect('jobseeker_profile', slug=jobseeker.slug)
     else:
         form = skillAdderForm()
@@ -116,9 +119,10 @@ def newSkill(request):
 
 #deletion views
 @login_required
-def deleteSkill(request, skillText):
+def deleteSkill(request, pk):
     jobseeker = JobSeeker.objects.get(user=request.user)
-    jobseeker.skills.remove(skillText)
+    skill = get_object_or_404(Skill, pk=pk)
+    jobseeker.skills.remove(skill)
     return redirect('jobseeker_profile', slug=jobseeker.slug)
 
 @login_required
@@ -148,3 +152,13 @@ def delete_education(request, pk):
 #define jobseeker homepage view
 def jobseeker_homepage(request):
     return render(request, 'jobseeker/jobseekerHomepage.html')
+
+def skill_autocomplete(request):
+    q = request.GET.get('q','')
+    skills = (
+        Skill.objects.filter(name__icontains=q)
+        .annotate(num_jobseekers=Count('jobseekers'))
+        .order_by('-num_jobseekers', 'name')[:5]
+    )
+    results = list(skills.values_list('name', flat=True))
+    return JsonResponse({'results':results})

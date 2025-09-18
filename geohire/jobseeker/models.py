@@ -16,8 +16,8 @@ class JobSeeker(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     headline = models.CharField(max_length=255, blank=True, null=True)
+    skills = models.ManyToManyField('jobseeker.Skill', blank=True, related_name='jobseekers')
     urls = []
-    skills = []
     def __str__(self):
         return self.slug
     
@@ -69,3 +69,10 @@ class userLink(models.Model):
 
     def __str__(self):
         return f"{self.jobseeker.slug} - {self.link}"
+    
+#creates a skill class
+class Skill(models.Model):
+    name = models.CharField(max_length = 200, blank = True, null = True)
+
+    def __str__(self):
+        return f"{self.skill}"
