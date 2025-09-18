@@ -1,33 +1,48 @@
 <!-- This is a basic profile page for job seekers that displays all their requisite information.-->
 <!-- The slug is set to DEBUG as I don't think it should be visible to users in the final version.-->
+{% load static %}
+
 <!DOCTYPE html>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <head>
         <title>Profile</title>
     </head>
 <body>
     {% include 'jobseeker/navbar.html' %}
-    <h1>Hi! {{ jobseeker.user.first_name }} this is your profile</h1>
-    <p>Your email is: {{ jobseeker.user.email }}</p>
-    {% if jobseeker.phone %}
-    <p>Your phone number is: {{ jobseeker.phone }}</p>
-    {% endif %}
-    {% if jobseeker.resume %}
-    <p>Your resume is: <a href="{{ jobseeker.resume.url }}">Download</a></p>
-    {% endif %}
     {% if jobseeker.headline %}
-    <p>Your headline is: {{ jobseeker.headline }}</p>
+    <div class = "headlineDiv">
+    <h1>{{ jobseeker.headline }}</h1>
+    </div>
     {% endif %}
+    <h1>Hi! {{ jobseeker.user.first_name }} this is your profile</h1>
+    <div class = "rowGrid mainProfileGrid">
+        <div class = "internalStack mainProfileItem" id="email">
+            {% if jobseeker.phone %}
+            <p>Your email is: {{ jobseeker.user.email }}</p>
+            {% endif %}
+        </div>
+        <div class = "internalStack mainProfileItem" id = "phone">
+            {% if jobseeker.phone %}
+            <p>Your phone number is: {{ jobseeker.phone }}</p>
+            {% endif %}
+        </div>
+        {% if jobseeker.urls %}
+        <div class = "mainProfileItem" id = "urls-{{forloop.counter}}">
+        {% for urlText in jobseeker.urls %}
+            <div class= "internalStack urlConDelete">
+                <a href="{{ urlText }}"> {{urlText}} </a>
+                <a href ="{% url 'jobseeker_delete_url' urlText %}">delete</a>
+            </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </div>
     <p>Your account was created at : {{ jobseeker.created_at }}</p>
     <p>Your account was updated at : {{ jobseeker.updated_at }}</p>
     {% if debug %}
     <p>Your unique slug is : {{ jobseeker.slug }}</p>
     {% endif %}
-    {% if jobseeker.urls %}
-    {% for urlText in jobseeker.urls %}
-    <p> URL: {{ urlText }}</p>
-    <a href ="{% url 'jobseeker_delete_url' urlText %}">delete</a>
-    {% endfor %}
-    {% endif %}
+    
     {% if jobseeker.skills %}
     {% for skillText in jobseeker.skills %}
     <p> Skill: {{ skillText }}</p>
@@ -56,20 +71,35 @@
     <p>{{ edu.description }}</p>
     <a href="{% url 'jobseeker_delete_education' edu.pk %}">Delete Education</a>
     {% endfor %}
-    {% if not jobseeker.location %}
-    <p>Want to add a location?</p>
-    <a href="{% url 'jobseeker_new_location' %}">Add Location</a>
-    <p> Want to add work experience?</p>
+    {% if jobseeker.resume %}
+    <embed src="{{ jobseeker.resume.url }}" id = "resumeEmbed">
+    <p>Your resume is: <a href="{{ jobseeker.resume.url }}">Download</a></p>
     {% endif %}
-    <a href="{% url 'jobseeker_new_work_experience' %}">Add Work Experience</a>
-    <p>Want to add education?</p>
-    <a href="{% url 'jobseeker_new_education' %}">Add Education</a>
-    <p>Want to add a url?</p>
-    <a href="{% url 'jobseeker_url_adder_form' %}">Add URL</a>
-    <p>Want to add a skill?</p>
-    <a href="{% url 'jobseeker_skill_adder_form' %}">Add Skill</a>
+    <div class = "rowGrid addItemDiv">
+        {% if not jobseeker.location %}
+            <div class = "internalStack adderLinks" id = "addLocation">
+                <p>Want to add a location?</p>
+                <a href="{% url 'jobseeker_new_location' %}">Add Location</a>
+            </div>
+        {% endif %}
+        <div class = "internalStack adderLinks" id = "addWorkExperience">
+            <p> Want to add work experience?</p>
+            <a href="{% url 'jobseeker_new_work_experience' %}">Add Work Experience</a>
+        </div>
+        <div class = "internalStack adderLinks" id = "addEducation">
+            <p>Want to add education?</p>
+            <a href="{% url 'jobseeker_new_education' %}">Add Education</a>
+        </div>
+        <div class = "internalStack adderLinks" id = "addURL">
+            <p>Want to add a url?</p>
+            <a href="{% url 'jobseeker_url_adder_form' %}">Add URL</a>
+        </div>
+        <div class = "internalStack adderLinks" id = "addSkill">
+            <p>Want to add a skill?</p>
+            <a href="{% url 'jobseeker_skill_adder_form' %}">Add Skill</a>
+        </div>
+    </div>
 </body>
-
 <html>
 
     

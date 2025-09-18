@@ -1,0 +1,50 @@
+body{
+    background-color: #2c5e39;
+    margin: 0;
+    padding: 0;
+}
+
+.headlineDiv {
+    width: 100vw;
+    background-color: rgb(86, 92, 59, 0.4);
+    text-align: center;
+}
+
+.mainProfileGrid {
+    
+}
+
+.mainProfileItem {
+    background-color: rgb(86, 92, 59, 0.4);
+}
+
+.rowGrid{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 2vw;
+    justify-items: center;
+    align-items: center;
+}
+
+.urlConDelete {
+    
+}
+
+.internalStack {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-rows: 1fr;
+    gap: 0.5vh;
+    justify-items: center;
+    align-items: center;
+    margin-top: 1vh;
+}
+.adderLinks{
+    background-color: rgb(86, 92, 59, 0.4);
+}
+
+#resumeEmbed {
+    width : 100vw;
+    height : 100vh;
+}

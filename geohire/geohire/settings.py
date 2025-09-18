@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     #this version of the import thing allows for additional, custom functions to be defined and used for jobseeker
     'jobseeker.apps.JobseekerConfig',
     'job',
-    'recruiter'
+    'recruiter',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +135,5 @@ LOGOUT_REDIRECT_URL = 'login'
 #define media storage (for resumes)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+X_FRAME_OPTIONS = 'ALLOWALL'
