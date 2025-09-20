@@ -11,11 +11,12 @@ def create_job(request):
         job_form = JobForm(request.POST)
         location_form = JobLocationForm(request.POST)
         if job_form.is_valid() and location_form.is_valid():
-            job = job_form.save()
+            job = job_form.save(commit=False)
+            job.save()
+            job_form.save_m2m()
             location = location_form.save(commit=False)
             location.job = job
             location.save()
-            job_form.save_m2m()
             return redirect("job_list")
     else:
         job_form = JobForm()
@@ -28,9 +29,10 @@ def edit_job(request, job_id):
         job_form = JobForm(request.POST, instance=job)
         location_form = JobLocationForm(request.POST, instance=job.location)
         if job_form.is_valid() and location_form.is_valid():
-            job_form.save()
-            location_form.save()
+            job = job_form.save(commit=False)
+            job.save()
             job_form.save_m2m()
+            location_form.save()
             return redirect("job_list")
     else:
         job_form = JobForm(instance=job)
