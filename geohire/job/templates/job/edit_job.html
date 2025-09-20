@@ -1,8 +1,16 @@
-<h1>Edit Job</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ job_form.as_p }}
-  {{ location_form.as_p }}
-  <button type="submit">Update</button>
-</form>
-<a href="{% url 'job_list' %}">Back to Jobs</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Job</title>
+</head>
+<body>
+    <h1>Edit Job</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ job_form.as_p }}
+        {{ location_form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'job_list' %}">Back to Job List</a>
+</body>
+</html>

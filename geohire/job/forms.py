@@ -10,4 +10,4 @@ class JobForm(forms.ModelForm):
 class JobLocationForm(forms.ModelForm):
     class Meta:
         model = JobLocation
-        fields = ["country", "state", "city", "zip_code"]
+        fields = ["country", "state", "city", "zip_code", "street_address"]

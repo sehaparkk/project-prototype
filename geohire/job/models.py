@@ -21,12 +21,14 @@ class Job(models.Model):
     def __str__(self):
         return self.title
 
+
 class JobLocation(models.Model):
     job = models.OneToOneField(Job, on_delete=models.CASCADE, related_name="location")
-    country = models.CharField(max_length=100)
-    state = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
     zip_code = models.CharField(max_length=20, blank=True, null=True)
+    street_address = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.job.title} - {self.city}, {self.country}"

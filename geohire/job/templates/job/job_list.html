@@ -1,59 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Job Listings</title>
+    <title>Job List</title>
 </head>
 <body>
     <h1>Job Listings</h1>
-
-    <a href="{% url 'create_job' %}">+ Add Job</a>
-
-    <ul>
+    <a href="{% url 'create_job' %}">Create a New Job</a>
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Salary</th>
+            <th>Skills</th>
+            <th>Actions</th>
+        </tr>
         {% for job in jobs %}
-            <li>
-                <h2>{{ job.title }}</h2>
-                <p>{{ job.description }}</p>
-                
+        <tr>
+            <td>{{ job.title }}</td>
+            <td>{{ job.description }}</td>
+            <td>
                 {% if job.location %}
-                    <p><strong>Location:</strong> 
-                        {{ job.location.city }}, 
-                        {{ job.location.state }},
-                        {{ job.location.country }}
-                        {% if job.location.zip_code %} - {{ job.location.zip_code }}{% endif %}
-                    </p>
+                    {{ job.location.city }}, {{ job.location.state }}, {{ job.location.country }}
                 {% endif %}
-
+            </td>
+            <td>
                 {% if not job.hide_salary %}
-                    <p><strong>Salary:</strong> 
-                        {% if job.salary_min and job.salary_max %}
-                            {{ job.salary_min }} - {{ job.salary_max }}
-                        {% elif job.salary_min %}
-                            From {{ job.salary_min }}
-                        {% elif job.salary_max %}
-                            Up to {{ job.salary_max }}
-                        {% endif %}
-                    </p>
+                    {% if job.salary_min and job.salary_max %}
+                        {{ job.salary_min }} - {{ job.salary_max }}
+                    {% elif job.salary_min %}
+                        From {{ job.salary_min }}
+                    {% elif job.salary_max %}
+                        Up to {{ job.salary_max }}
+                    {% endif %}
+                {% else %}
+                    Hidden
                 {% endif %}
-
-                <p><strong>Work Type:</strong> {{ job.remote_or_onsite }}</p>
-
-                <p><strong>Visa Sponsorship:</strong> 
-                    {% if job.visa_sponsorship %}Yes{% else %}No{% endif %}
-                </p>
-
-                {% if job.skills.all %}
-                    <p><strong>Skills:</strong> 
-                        {% for skill in job.skills.all %}
-                            {{ skill.name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
-                {% endif %}
-
+            </td>
+            <td>
+                <ul>
+                {% for skill in job.skills.all %}
+                    <li>{{ skill.name }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+            <td>
                 <a href="{% url 'edit_job' job.id %}">Edit</a>
-            </li>
-        {% empty %}
-            <li>No jobs available.</li>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 </body>
 </html>
