@@ -18,5 +18,10 @@ urlpatterns = [
     path('delete_work_experience/<int:pk>/', views.delete_work_experience, name='recruiter_delete_work_experience'),
     path('delete_education/<int:pk>/', views.delete_education, name='recruiter_delete_education'),
     path('recruiterHomepage/', views.recruiter_homepage, name='recruiter_homepage'),
-    path('recruiter/map.html', views.map, name='recruiter_map')
+    path('recruiter/map.html', views.map, name='recruiter_map'),
+    path('pipeline/', views.pipeline, name='recruiter_pipeline'),
+    path('update_application_status/<int:pk>/', views.update_application_status, name='update_application_status'),
+    path('save_search/', views.save_search, name='save_search'),
+    path('saved_searches/', views.list_saved_searches, name='list_saved_searches'),
+    path('job/<int:job_id>/candidate_recommendations/', views.candidate_recommendations, name='candidate_recommendations'),
 ]

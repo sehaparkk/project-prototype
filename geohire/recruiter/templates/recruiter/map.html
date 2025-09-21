@@ -1,64 +1,42 @@
-<!--Google Maps API Key AIzaSyCmzHOfATw-C2SEWWTM7QEJHu-QlI7kb1c-->
-
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Google Maps Example</title>
+    <title>Recruiter Map</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <style>
-        #map {
-            height: 100vh;
-            width: 100%;
-        }
-        body {
-          background-color: aqua;
-        }
-        .gm-style-iw-c button.gm-ui-hover-effect {
-          display: none !important;
-        }
+        #map { height: 500px; }
     </style>
 </head>
 <body>
-    {% include 'recruiter/navbar.html' %}
-    <h3>My Google Map</h3>
+    <h1>Recruiter Map - Job Seekers</h1>
     <div id="map"></div>
-    {{ jobseekers_data|json_script:"jobseekers_data" }}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmzHOfATw-C2SEWWTM7QEJHu-QlI7kb1c&callback=initMap" async defer></script>
+
     <script>
-      function initMap() {
-          const jobSeekers = JSON.parse(document.getElementById('jobseekers_data').textContent);
-          let center = {lat: 33.7490, lng: -84.3880};
-          for (let js of jobSeekers) {
-            if (js.lat && js.lng) {
-              center = {lat: js.lat, lng: js.lng};
-              break;
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var markers = L.markerClusterGroup();
+
+        var jobseekerData = JSON.parse('{{ jobseekers_data|safe }}');
+
+        jobseekerData.forEach(function(jobseeker) {
+            if (jobseeker.lat && jobseeker.lng) {
+                var marker = L.marker([jobseeker.lat, jobseeker.lng]);
+                marker.bindPopup('<b>' + jobseeker.firstName + '</b><br><a href="{% url 'jobseeker_profile' slug='_SLUG_' %}'.replace('_SLUG_', jobseeker.slug) + '">View Profile</a>');
+                markers.addLayer(marker);
             }
-          }
-          var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: center
-          });
+        });
 
-          jobSeekers.forEach(function(js) {
-            if (js.lat && js.lng) {
-              var marker = new google.maps.Marker({
-                position: {lat: js.lat, lng: js.lng},
-                map: map,
-                title: js.firstName
-              });
-
-              var infoWindow = new google.maps.InfoWindow({
-                content : js.firstName
-              });
-
-              marker.addListener('mouseover', function(){
-                infoWindow.open(map, marker);
-              });
-              marker.addListener('mouseout', function() {
-                infoWindow.close();
-              });
-            }
-          });
-        }
+        map.addLayer(markers);
     </script>
 </body>
 </html>

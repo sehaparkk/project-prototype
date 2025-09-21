@@ -31,3 +31,13 @@ class workExperienceForm(forms.ModelForm):
     class Meta:
         model = workExperience
         fields = ('company', 'position', 'start_date', 'end_date', 'description')
+
+class JobSeekerSearchForm(forms.Form):
+    skills = forms.CharField(label='Skills', required=False)
+    location = forms.CharField(label='Location', required=False)
+    projects = forms.CharField(label='Projects', required=False)
+
+class SaveSearchForm(forms.ModelForm):
+    class Meta:
+        model = SavedSearch
+        fields = ['name', 'skills', 'location', 'projects']

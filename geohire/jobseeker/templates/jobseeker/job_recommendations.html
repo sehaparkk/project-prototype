@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Recommendations</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <h1>Job Recommendations</h1>
+    {% if recommended_jobs %}
+        <ul>
+        {% for job in recommended_jobs %}
+            <li>
+                <a href="{{ job.get_absolute_url }}">{{ job.title }}</a> at {{ job.recruiter.user.first_name }} {{ job.recruiter.user.last_name }}
+                <p>{{ job.description|truncatechars:100 }}</p>
+                <p>Skills: {% for skill in job.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No job recommendations found based on your skills. Please add more skills to your profile.</p>
+    {% endif %}
+</body>
+</html>

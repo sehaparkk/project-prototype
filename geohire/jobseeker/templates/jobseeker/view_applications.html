@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Applications</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <h1>My Applications</h1>
+    <table border="1">
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Applied At</th>
+            <th>Status</th>
+        </tr>
+        {% for application in applications %}
+        <tr>
+            <td>{{ application.job.title }}</td>
+            <td>{{ application.job.recruiter.user.first_name }} {{ application.job.recruiter.user.last_name }}</td>
+            <td>{{ application.applied_at }}</td>
+            <td>{{ application.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

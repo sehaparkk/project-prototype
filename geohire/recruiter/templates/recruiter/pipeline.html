@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Applicant Pipeline</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <style>
+        .pipeline-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .status-column {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 20%;
+            min-height: 300px;
+            background-color: #f9f9f9;
+        }
+        .status-column h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .application-card {
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .application-card h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Applicant Pipeline</h1>
+
+    <div class="pipeline-container">
+        {% for status, applications in pipeline_data.items %}
+        <div class="status-column">
+            <h2>{{ status }}</h2>
+            {% for app in applications %}
+            <div class="application-card">
+                <h3>{{ app.jobseeker.user.first_name }} {{ app.jobseeker.user.last_name }}</h3>
+                <p>Applied for: {{ app.job.title }}</p>
+                <p>Note: {{ app.note }}</p>
+                {% if app.recruiter_note %}
+                <p>Recruiter Note: {{ app.recruiter_note }}</p>
+                {% endif %}
+                <a href="{% url 'jobseeker_profile' slug=app.jobseeker.slug %}">View Profile</a>
+                <form class="update-application-form" data-application-id="{{ app.id }}">
+                    {% csrf_token %}
+                    <label for="status-{{ app.id }}">Status:</label>
+                    <select name="status" id="status-{{ app.id }}">
+                        {% for choice_value, choice_label in app.STATUS_CHOICES %}
+                            <option value="{{ choice_value }}" {% if app.status == choice_value %}selected{% endif %}>{{ choice_label }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="recruiter_note-{{ app.id }}">Recruiter Note:</label>
+                    <textarea name="recruiter_note" id="recruiter_note-{{ app.id }}">{{ app.recruiter_note }}</textarea>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+            {% empty %}
+            <p>No applications in this stage.</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.querySelectorAll('.update-application-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const applicationId = this.dataset.applicationId;
+                const formData = new FormData(this);
+                
+                fetch(`/recruiter/update_application_status/${applicationId}/`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Application updated successfully!');
+                        // Optionally, re-render the pipeline or move the card
+                        location.reload(); // Simple reload for now
+                    } else {
+                        alert('Error updating application: ' + JSON.stringify(data.errors));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the application.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

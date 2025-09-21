@@ -1,12 +1,15 @@
-<!-- This is a basic profile page for job seekers that displays all their requisite information.-->
-<!-- The slug is set to DEBUG as I don't think it should be visible to users in the final version.-->
+{% load static %}
 <!DOCTYPE html>
 <head>
         <title>Profile</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     </head>
 <body>
     {% include 'recruiter/navbar.html' %}
     <h1>Hi! {{ recruiter.user.first_name }} this is your profile</h1>
+    {% if request.user.is_authenticated and hasattr(request.user, 'jobseeker') %}
+        <a href="{% url 'send_message' recruiter.user.id %}">Send Message</a>
+    {% endif %}
     <p>Your email is: {{ recruiter.user.email }}</p>
     {% if recruiter.phone %}
     <p>Your phone number is: {{ recruiter.phone }}</p>
@@ -53,7 +56,4 @@
     <p> Want to add education?</p>
     <a href="{% url 'recruiter_new_education' %}">Add Education</a>
 </body>
-
-<html>
-
-    
+</html>

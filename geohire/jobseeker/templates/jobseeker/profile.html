@@ -3,9 +3,9 @@
 {% load static %}
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <head>
         <title>Profile</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     </head>
 <body>
     {% include 'jobseeker/navbar.html' %}
@@ -15,6 +15,9 @@
     </div>
     {% endif %}
     <h1>Hi! {{ jobseeker.user.first_name }} this is your profile</h1>
+    <a href="{% url 'jobseeker_edit_profile' %}">Edit Profile</a>
+    
+    {% if can_view_full_profile %}
     <div class = "rowGrid mainProfileGrid">
         <div class = "internalStack mainProfileItem" id="email">
             {% if jobseeker.phone %}
@@ -52,6 +55,7 @@
     <p>{{ jobseeker.location.street_address}}, {{ jobseeker.location.city }}, {{ jobseeker.location.state }}, {{ jobseeker.location.zip_code }}</p>
     <p> {{jobseeker.location.country}}</p>
     <a href="{% url 'jobseeker_delete_location' jobseeker.location.pk %}">Delete Location</a>
+    <a href="{% url 'jobseeker_edit_location' jobseeker.location.pk %}">Edit Location</a>
     {% if jobseeker.location.city %}
     <p>Your city is: {{ jobseeker.location.city }}</p>
     {% endif %}
@@ -61,6 +65,7 @@
     <p>{{ work.position }} at {{ work.company }} from {{ work.start_date }} to {{ work.end_date }}</p>
     <p>{{ work.description }}</p>
     <a href="{% url 'jobseeker_delete_work_experience' work.pk %}">Delete Work Experience</a>
+    <a href="{% url 'jobseeker_edit_work_experience' work.pk %}">Edit Work Experience</a>
     {% endfor %}
     {% for edu in jobseeker.educations.all %}
     <h3>Education:</h3>
@@ -69,6 +74,7 @@
     <p>{{ edu.GPA }}</p>
     <p>{{ edu.description }}</p>
     <a href="{% url 'jobseeker_delete_education' edu.pk %}">Delete Education</a>
+    <a href="{% url 'jobseeker_edit_education' edu.pk %}">Edit Education</a>
     {% endfor %}
     {% if jobseeker.resume %}
     <embed src="{{ jobseeker.resume.url }}" id = "resumeEmbed">
@@ -98,7 +104,11 @@
             <a href="{% url 'jobseeker_skill_adder_form' %}">Add Skill</a>
         </div>
     </div>
+    {% if request.user.is_authenticated and request.user.is_staff %}
+        <a href="{% url 'send_message' jobseeker.user.id %}">Send Message</a>
+    {% endif %}
+    {% else %}
+    <p>This profile is private or only visible to recruiters.</p>
+    {% endif %}
 </body>
 <html>
-
-    

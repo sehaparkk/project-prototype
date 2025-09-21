@@ -1,4 +1,4 @@
-<!-- This is an epic registration page that uses our custom job seeker registration form.-->
+{% load static %}
 <!DOCTYPE html>
 <html>
     <script>
@@ -27,6 +27,7 @@
     </script>
     <head>
         <title>Create New Skill!</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     </head>
     <body>
         {% include 'jobseeker/navbar.html' %}

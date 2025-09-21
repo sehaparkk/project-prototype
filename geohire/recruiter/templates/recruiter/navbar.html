@@ -20,3 +20,12 @@
     {% csrf_token %}
     <button type="submit">Map</button>
 </form>
+<form action="{% url 'recruiter_pipeline' %}" method="get" style="display:inline;">
+    <button type="submit">Applicant Pipeline</button>
+</form>
+<form action="{% url 'inbox' %}" method="get" style="display:inline;">
+    <button type="submit">Inbox</button>
+</form>
+<form action="{% url 'list_saved_searches' %}" method="get" style="display:inline;">
+    <button type="submit">Saved Searches</button>
+</form>

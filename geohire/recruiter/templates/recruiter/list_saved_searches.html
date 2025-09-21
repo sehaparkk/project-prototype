@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saved Searches</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}>
+</head>
+<body>
+    <h1>My Saved Searches</h1>
+    {% if saved_searches %}
+        <ul>
+        {% for search in saved_searches %}
+            <li>
+                <strong>{{ search.name }}</strong> (Skills: {{ search.skills }}, Location: {{ search.location }}, Projects: {{ search.projects }}) - Saved on {{ search.created_at }}
+                <!-- Add a link to re-run the search -->
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No saved searches yet.</p>
+    {% endif %}
+</body>
+</html>

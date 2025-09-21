@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 #JobSeeker class to hold data for the jobseeker
 class JobSeeker(models.Model):
+    PRIVACY_CHOICES = [
+        ('Public', 'Public'),
+        ('Private', 'Private'),
+        ('Recruiters Only', 'Recruiters Only'),
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     #unique, non important field to use to search for jobSeekers without exposing the id to the web
     #consists on name + number of other people with that name
@@ -16,6 +21,7 @@ class JobSeeker(models.Model):
     headline = models.CharField(max_length=255, blank=True, null=True)
     skills = models.ManyToManyField('jobseeker.Skill', blank=True, related_name='jobseekers')
     urls = []
+    privacy_setting = models.CharField(max_length=20, choices=PRIVACY_CHOICES, default='Public')
     
     def __str__(self):
         return self.slug
@@ -68,7 +74,7 @@ class userLink(models.Model):
     link = models.URLField()
     description = models.CharField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
+    def __str__(Sself):
         return f"{self.jobseeker.slug} - {self.link}"
     
 #creates a skill class

@@ -1,9 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
+<html>
 <head>
     <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <body>
     {% include 'recruiter/navbar.html' %}
     <h1> Welcome to recruiter home!</h1>
     <h3> The best location to find a job based on location! </h3>
+</body>
 </html>

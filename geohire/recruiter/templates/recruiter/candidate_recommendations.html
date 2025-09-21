@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Recommendations for {{ job.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}>
+</head>
+<body>
+    <h1>Candidate Recommendations for "{{ job.title }}"</h1>
+    {% if recommended_jobseekers %}
+        <ul>
+        {% for jobseeker in recommended_jobseekers %}
+            <li>
+                <a href="{% url 'jobseeker_profile' slug=jobseeker.slug %}">{{ jobseeker.user.first_name }} {{ jobseeker.user.last_name }}</a>
+                - {{ jobseeker.headline }}
+                <p>Skills: {% for skill in jobseeker.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No candidate recommendations found for this job based on matching skills.</p>
+    {% endif %}
+</body>
+</html>

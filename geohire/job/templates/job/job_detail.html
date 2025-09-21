@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ job.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <h1>{{ job.title }}</h1>
+    <p>{{ job.description }}</p>
+    <p>Salary: 
+        {% if not job.hide_salary %}
+            {% if job.salary_min and job.salary_max %}
+                {{ job.salary_min }} - {{ job.salary_max }}
+            {% elif job.salary_min %}
+                From {{ job.salary_min }}
+            {% elif job.salary_max %}
+                Up to {{ job.salary_max }}
+            {% endif %}
+        {% else %}
+            Hidden
+        {% endif %}
+    </p>
+    <p>Skills:
+        <ul>
+        {% for skill in job.skills.all %}
+            <li>{{ skill.name }}</li>
+        {% endfor %}
+        </ul>
+    </p>
+    <p>Location: {{ job.location.city }}, {{ job.location.state }}, {{ job.location.country }}</p>
+    <p>Remote/Onsite: {{ job.remote_or_onsite }}</p>
+    <p>Visa Sponsorship: {{ job.visa_sponsorship|yesno:"Yes,No" }}</p>
+    <a href="{% url 'apply_for_job' job.id %}">Apply for this job</a>
+    {% if request.user.is_authenticated and hasattr(request.user, 'recruiter') and job.recruiter == request.user.recruiter %}
+        <a href="{% url 'candidate_recommendations' job.id %}">View Candidate Recommendations</a>
+    {% endif %}
+</body>
+</html>

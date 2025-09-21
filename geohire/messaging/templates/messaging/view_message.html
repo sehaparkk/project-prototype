@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Message</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}>
+</head>
+<body>
+    <h1>Subject: {{ message.subject }}</h1>
+    <p>From: {{ message.sender.username }}</p>
+    <p>To: {{ message.receiver.username }}</p>
+    <p>Timestamp: {{ message.timestamp }}</p>
+    <hr>
+    <p>{{ message.body }}</p>
+    <hr>
+    <a href="{% url 'send_message' message.sender.id %}">Reply</a>
+    <a href="{% url 'inbox' %}">Back to Inbox</a>
+</body>
+</html>

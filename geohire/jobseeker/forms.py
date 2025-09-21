@@ -37,3 +37,8 @@ class urlAdderForm(forms.Form):
 
 class skillAdderForm(forms.Form):
     skill = forms.CharField(max_length = 200, widget=forms.TextInput(attrs={'id':'skill-input'}))
+
+class JobSeekerProfileForm(forms.ModelForm):
+    class Meta:
+        model = JobSeeker
+        fields = ['headline', 'phone', 'resume', 'privacy_setting']

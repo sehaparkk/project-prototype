@@ -16,3 +16,12 @@
     {% csrf_token %}
     <button type="submit">Logout</button>
 </form>
+<form action="{% url 'view_applications' %}" method="get" style="display:inline;">
+    <button type="submit">My Applications</button>
+</form>
+<form action="{% url 'inbox' %}" method="get" style="display:inline;">
+    <button type="submit">Inbox</button>
+</form>
+<form action="{% url 'job_recommendations' %}" method="get" style="display:inline;">
+    <button type="submit">Job Recommendations</button>
+</form>

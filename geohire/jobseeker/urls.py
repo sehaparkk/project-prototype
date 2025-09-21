@@ -21,5 +21,11 @@ urlpatterns = [
     path('deleteURL/<str:urlText>/', views.deleteURL, name='jobseeker_delete_url'),
     path('newSkills/', views.newSkill, name = 'jobseeker_skill_adder_form'),
     path('deleteSkill/<int:pk>/', views.deleteSkill, name='jobseeker_delete_skill'),
-    path('skill-autocomplete/', views.skill_autocomplete, name='skill_autocomplete')
+    path('skill-autocomplete/', views.skill_autocomplete, name='skill_autocomplete'),
+    path('applications/', views.view_applications, name='view_applications'),
+    path('editLocation/<int:pk>/', views.editLocation, name='jobseeker_edit_location'),
+    path('editWorkExperience/<int:pk>/', views.editWorkExperience, name='jobseeker_edit_work_experience'),
+    path('editEducation/<int:pk>/', views.editEducation, name='jobseeker_edit_education'),
+    path('editProfile/', views.editJobSeekerProfile, name='jobseeker_edit_profile'),
+    path('recommendations/', views.job_recommendations, name='job_recommendations'),
 ]

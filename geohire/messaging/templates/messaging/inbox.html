@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inbox</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}>
+</head>
+<body>
+    <h1>Inbox</h1>
+
+    <h2>Received Messages</h2>
+    {% if received_messages %}
+        <ul>
+        {% for message in received_messages %}
+            <li>
+                From: {{ message.sender.username }} - Subject: <a href="{% url 'view_message' message.id %}">{{ message.subject }}</a>
+                {% if not message.is_read %}<strong>(Unread)</strong>{% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No received messages.</p>
+    {% endif %}
+
+    <h2>Sent Messages</h2>
+    {% if sent_messages %}
+        <ul>
+        {% for message in sent_messages %}
+            <li>
+                To: {{ message.receiver.username }} - Subject: <a href="{% url 'view_message' message.id %}">{{ message.subject }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No sent messages.</p>
+    {% endif %}
+</body>
+</html>
