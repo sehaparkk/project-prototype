@@ -18,4 +18,5 @@ urlpatterns = [
     path('delete_work_experience/<int:pk>/', views.delete_work_experience, name='recruiter_delete_work_experience'),
     path('delete_education/<int:pk>/', views.delete_education, name='recruiter_delete_education'),
     path('recruiterHomepage/', views.recruiter_homepage, name='recruiter_homepage'),
+    path('recruiter/map.html', views.map, name='recruiter_map')
 ]

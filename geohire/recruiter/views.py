@@ -4,6 +4,8 @@ from .forms import *
 from .models import Recruiter
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
+from jobseeker.models import JobSeeker
+from geopy.geocoders import Nominatim
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
@@ -42,6 +44,19 @@ def register(request):
         form = recruiterCreationForm()
     return render(request, 'recruiter/register.html', {'form': form})
 
+def map(request):
+    jobseekers = JobSeeker.objects.all()
+    #you have to do json cause js :(:(
+    jobseeker_data = [
+        {
+            'firstName' : jobseeker.user.first_name,
+            'lat' : jobseeker.location.latitude if jobseeker.location else None,
+            'lng' : jobseeker.location.longitude if jobseeker.location else None,
+        }
+        for jobseeker in jobseekers
+    ]
+    return render (request, 'recruiter/map.html', {'jobseekers_data' : jobseeker_data})
+
 #create view for creating a new location
 @login_required
 def newLocation(request):
@@ -55,6 +70,10 @@ def newLocation(request):
         if form.is_valid():
             location = form.save(commit=False)
             location.recruiter = Recruiter.objects.get(user=request.user)
+            address = f"{form.cleaned_data.get('street_address')}, {form.cleaned_data.get('city')}, {form.cleaned_data.get('state')}, {form.cleaned_data.get('zip_code')}, {form.cleaned_data.get('country')}"
+            lat, lng = geocode_address(address)
+            location.latitude = lat
+            location.latitude = lng
             location.save()
             return redirect('recruiter_profile', slug=location.recruiter.slug)
     else:

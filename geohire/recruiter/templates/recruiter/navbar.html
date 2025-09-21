@@ -16,3 +16,7 @@
     {% csrf_token %}
     <button type="submit">Logout</button>
 </form>
+<form action = "{%url 'recruiter_map'%}" method = "post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Map</button>
+</form>

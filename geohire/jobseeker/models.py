@@ -8,8 +8,6 @@ class JobSeeker(models.Model):
     #unique, non important field to use to search for jobSeekers without exposing the id to the web
     #consists on name + number of other people with that name
     slug = models.SlugField(unique=True)
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15, blank=True, null=True)
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
@@ -18,6 +16,7 @@ class JobSeeker(models.Model):
     headline = models.CharField(max_length=255, blank=True, null=True)
     skills = models.ManyToManyField('jobseeker.Skill', blank=True, related_name='jobseekers')
     urls = []
+    
     def __str__(self):
         return self.slug
     
@@ -28,9 +27,11 @@ class userLocation(models.Model):
     zip_code = models.CharField(max_length=20,  blank=True, null=True)
     street_address = models.CharField(max_length=255,  blank=True, null=True)
     country = models.CharField(max_length=100,  blank=True, null=True)
-
+    latitude = models.FloatField(blank = True, null = True)
+    longitude = models.FloatField(blank = True, null = True)
+    
     def __str__(self):
-        return f"{self.jobseeker.slug} - {self.country} at {self.zip_code}" 
+        return f"{self.recruiter.slug} - {self.country} at {self.zip_code}" 
 
 #creates a class for user eduction that holds information about the users education
 #this is linked to a user with a foreign key, meaning it belongs to the user even though

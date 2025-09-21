@@ -1,0 +1,55 @@
+<!--Google Maps API Key AIzaSyCmzHOfATw-C2SEWWTM7QEJHu-QlI7kb1c-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Example</title>
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    {% include 'recruiter/navbar.html' %}
+    <h3>My Google Map</h3>
+    <div id="map"></div>
+    {{ jobseekers_data|json_script:"jobseekers_data" }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmzHOfATw-C2SEWWTM7QEJHu-QlI7kb1c&callback=initMap" async defer></script>
+    <script>
+      function initMap() {
+          const jobSeekers = JSON.parse(document.getElementById('jobseekers_data').textContent);
+          let center = {lat: 33.7490, lng: -84.3880};
+          for (let js of jobSeekers) {
+            if (js.lat && js.lng) {
+              center = {lat: js.lat, lng: js.lng};
+              break;
+            }
+          }
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: center
+          });
+
+          jobSeekers.forEach(function(js) {
+            if (js.lat && js.lng) {
+              var marker = new google.maps.Marker({
+                position: {lat: js.lat, lng: js.lng},
+                map: map,
+                title: js.firstName
+              });
+
+              var infoWindow = new google.maps.InfoWindow({
+                content : js.firstName
+              });
+
+              marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+              });
+            }
+          });
+        }
+    </script>
+</body>
+</html>

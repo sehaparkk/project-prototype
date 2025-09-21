@@ -8,8 +8,6 @@ class Recruiter(models.Model):
     #unique, non important field to use to search for jobSeekers without exposing the id to the web
     #consists on name + number of other people with that name
     slug = models.SlugField(unique=True)
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -26,7 +24,9 @@ class userLocation(models.Model):
     zip_code = models.CharField(max_length=20,  blank=True, null=True)
     street_address = models.CharField(max_length=255,  blank=True, null=True)
     country = models.CharField(max_length=100,  blank=True, null=True)
-
+    latitude = models.FloatField(blank = True, null = True)
+    longitude = models.FloatField(blank = True, null = True)
+    
     def __str__(self):
         return f"{self.recruiter.slug} - {self.country} at {self.zip_code}" 
 

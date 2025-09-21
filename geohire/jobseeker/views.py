@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Count
+from geopy.geocoders import Nominatim
 
 # basic show profile view, just takes a slug, finds the jobseeker, and then passes both along
 def show_profile(request, slug):
@@ -57,6 +58,10 @@ def newLocation(request):
         if form.is_valid():
             location = form.save(commit=False)
             location.jobseeker = JobSeeker.objects.get(user=request.user)
+            address = f"{form.cleaned_data.get('street_address')}, {form.cleaned_data.get('city')}, {form.cleaned_data.get('state')}, {form.cleaned_data.get('zip_code')}, {form.cleaned_data.get('country')}"
+            googleLocation = Nominatim(user_agent="geohire_app").geocode(address)
+            location.latitude = googleLocation.latitude
+            location.longitude = googleLocation.longitude
             location.save()
             return redirect('jobseeker_profile', slug=location.jobseeker.slug)
     else:
